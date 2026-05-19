@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#c0392b">
+<meta name="description" content="立て替え分を一枚のリンクで集めよう。PayPay・銀行振込どちらにも対応。登録なし・アプリ不要。">
+<title>割り勘link — 立て替え分をリンクで集める</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="device-frame">
+
+  <a href="./" class="brand">
+    <div class="brand-mark">割</div>
+    <div>
+      <div class="brand-name">割り勘<span class="accent">link</span></div>
+      <div class="brand-sub">WARIKAN LINK</div>
+    </div>
+  </a>
+
+  <!-- ============ 作成 ============ -->
+  <section id="screen-create">
+    <h1 class="page-title">立て替え分、<br><span class="accent">リンクで集めよう</span>。</h1>
+    <p class="page-sub">PayPay・銀行振込どちらにも対応。<br>登録なし・アプリ不要、入力するだけ。</p>
+
+    <!-- keishawari.com からのインポート通知 -->
+    <div id="import-banner" class="banner is-hidden">
+      <strong>keishawari から計算結果を引き継ぎました</strong>
+      <span id="import-banner-detail"></span>
+    </div>
+
+    <form id="form-create" novalidate>
+
+      <!-- モード切替 -->
+      <div class="mode-tabs" role="tablist">
+        <button type="button" id="tab-single" class="active" role="tab" aria-selected="true">全員同額</button>
+        <button type="button" id="tab-split" role="tab" aria-selected="false">個別金額</button>
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">
+          <span class="form-label-text">タイトル</span>
+          <span class="form-label-optional">任意</span>
+        </div>
+        <input type="text" class="form-input" id="f-title" maxlength="80" placeholder="飲み会代、誕生日プレゼント代 など">
+      </div>
+
+      <!-- 全員同額モード -->
+      <div id="single-fields">
+        <div class="form-section">
+          <div class="form-label">
+            <span class="form-label-text">金額(一人あたり)</span>
+            <span class="form-label-optional">任意</span>
+          </div>
+          <input type="text" inputmode="numeric" class="form-input" id="f-amount" placeholder="¥ 3,000">
+          <div class="form-hint">未入力でもリンクは作れます(支払う人に金額を伝えるとき便利です)</div>
+        </div>
+      </div>
+
+      <!-- 個別金額モード -->
+      <div id="split-fields" class="is-hidden">
+        <div class="form-section">
+          <div class="form-label">
+            <span class="form-label-text">支払う人と金額</span>
+            <span class="form-label-required">必須</span>
+          </div>
+          <div class="split-list" id="split-list"></div>
+          <button type="button" class="split-add-btn" id="btn-add-split">＋ 行を追加</button>
+          <div class="split-total">
+            <span>合計</span>
+            <span><span class="num" id="split-total-num">¥0</span> / <span id="split-total-count">0</span>人</span>
+          </div>
+          <div class="form-hint" style="margin-top:8px">受け取り側は名前から自分の金額を選べます。</div>
+        </div>
+      </div>
+
+      <!-- PayPay -->
+      <div class="form-group-card" id="card-paypay">
+        <div class="form-group-title">
+          <span class="form-group-icon paypay">PP</span>
+          PayPay
+        </div>
+        <p class="form-group-sub">PayPay ID(@から始まる文字列)を登録できます</p>
+        <div class="form-label">
+          <span class="form-label-text">PayPay ID</span>
+          <span class="form-label-optional">任意</span>
+        </div>
+        <input type="text" class="form-input" id="f-paypay" maxlength="40" placeholder="@yourname">
+      </div>
+
+      <!-- 銀行 -->
+      <div class="form-group-card" id="card-bank">
+        <div class="form-group-title">
+          <span class="form-group-icon bank">銀</span>
+          銀行口座
+        </div>
+        <p class="form-group-sub">振込先として表示されます</p>
+
+        <div class="form-row">
+          <div>
+            <div class="form-label"><span class="form-label-text">銀行名</span></div>
+            <input type="text" class="form-input" id="f-bank-name" maxlength="30" placeholder="◯◯銀行">
+          </div>
+          <div>
+            <div class="form-label"><span class="form-label-text">支店名</span></div>
+            <input type="text" class="form-input" id="f-bank-branch" maxlength="30" placeholder="◯◯支店">
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-top:14px">
+          <div>
+            <div class="form-label"><span class="form-label-text">種別</span></div>
+            <select class="form-select" id="f-bank-type">
+              <option value="普通">普通</option>
+              <option value="当座">当座</option>
+              <option value="貯蓄">貯蓄</option>
+            </select>
+          </div>
+          <div>
+            <div class="form-label"><span class="form-label-text">口座番号</span></div>
+            <input type="text" inputmode="numeric" class="form-input" id="f-bank-acct" maxlength="20" placeholder="1234567">
+          </div>
+        </div>
+
+        <div style="margin-top:14px">
+          <div class="form-label"><span class="form-label-text">名義(カナ)</span></div>
+          <input type="text" class="form-input" id="f-bank-holder" maxlength="40" placeholder="ヤマダ タロウ">
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">
+          <span class="form-label-text">表示する名前</span>
+          <span class="form-label-optional">任意</span>
+        </div>
+        <input type="text" class="form-input" id="f-payee-name" maxlength="40" placeholder="例:山田(幹事)">
+        <div class="form-hint">支払い画面で「○○への支払い」と表示されます。</div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-label">
+          <span class="form-label-text">ひとこと</span>
+          <span class="form-label-optional">任意</span>
+        </div>
+        <textarea class="form-textarea" id="f-memo" maxlength="200" placeholder="例:◯月◯日までにお願いします"></textarea>
+      </div>
+
+      <div class="form-error" id="form-error"></div>
+
+      <button type="submit" class="submit-btn" id="btn-submit">リンクを発行する</button>
+
+      <p class="privacy-note">
+        サーバーに情報は送信されません。<br>
+        入力内容はURLの#以降に暗号化(Base64URL)して保持されます。
+      </p>
+    </form>
+
+    <p class="footer-note">
+      <a href="https://keishawari.com/" rel="noopener" target="_blank">keishawari.com</a> と連携できます
+    </p>
+  </section>
+
+  <!-- ============ 発行完了 ============ -->
+  <section id="screen-share" class="is-hidden">
+    <div class="complete-mark">済</div>
+    <h1 class="complete-title">一枚のリンクに、<br>まとまりました</h1>
+    <p class="complete-sub">このリンクをLINE等で共有してください</p>
+
+    <div class="link-card">
+      <div class="link-card-label">共有用URL</div>
+      <div class="link-card-url" id="share-url-text"></div>
+      <div class="link-card-actions">
+        <button type="button" class="link-action-btn" id="btn-copy-url">URLをコピー</button>
+        <button type="button" class="link-action-btn primary" id="btn-share">共有する</button>
+      </div>
+    </div>
+
+    <div class="qr-card">
+      <div class="qr-canvas-wrap" id="qr-wrap" aria-label="QRコード"></div>
+      <div class="qr-label">QRコードで読み取れます</div>
+    </div>
+
+    <div class="warning-card">
+      <strong>このURLが情報のすべてです</strong>
+      サーバーに保存されないため、URLを失うと再表示・編集はできません。
+      ブックマークするか、自分宛にも送っておくと安心です。
+    </div>
+
+    <button type="button" class="copy-all-btn" style="margin-top:20px" id="btn-back-edit">
+      ← 内容を編集する
+    </button>
+
+    <p class="footer-note">
+      <a href="https://keishawari.com/" rel="noopener" target="_blank">keishawari.com</a> と連携できます
+    </p>
+  </section>
+
+</div>
+
+<script src="assets/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // -------- DOM refs --------
+  const $ = (id) => document.getElementById(id);
+  const screenCreate = $('screen-create');
+  const screenShare  = $('screen-share');
+  const tabSingle    = $('tab-single');
+  const tabSplit     = $('tab-split');
+  const singleFields = $('single-fields');
+  const splitFields  = $('split-fields');
+  const splitList    = $('split-list');
+  const splitTotalNum = $('split-total-num');
+  const splitTotalCount = $('split-total-count');
+  const importBanner = $('import-banner');
+  const importBannerDetail = $('import-banner-detail');
+  const formError    = $('form-error');
+
+  let mode = 'single';
+  let splits = []; // [{n, a}]
+
+  // -------- Mode tabs --------
+  function setMode(next) {
+    mode = next;
+    tabSingle.classList.toggle('active', mode === 'single');
+    tabSplit .classList.toggle('active', mode === 'split');
+    tabSingle.setAttribute('aria-selected', mode === 'single');
+    tabSplit .setAttribute('aria-selected', mode === 'split');
+    singleFields.classList.toggle('is-hidden', mode !== 'single');
+    splitFields .classList.toggle('is-hidden', mode !== 'split');
+    if (mode === 'split' && splits.length === 0) addSplitRow();
+  }
+  tabSingle.addEventListener('click', () => setMode('single'));
+  tabSplit .addEventListener('click', () => setMode('split'));
+
+  // -------- Splits editor --------
+  function renderSplits() {
+    splitList.innerHTML = '';
+    splits.forEach((row, idx) => {
+      const el = document.createElement('div');
+      el.className = 'split-row';
+      el.innerHTML = `
+        <input type="text" class="name" placeholder="名前" maxlength="30" value="${WL.esc(row.n)}">
+        <input type="text" class="amount" inputmode="numeric" placeholder="0" value="${row.a || ''}">
+        <button type="button" class="remove-btn" aria-label="この行を削除">×</button>
+      `;
+      const [nameEl, amtEl, rmBtn] = el.children;
+      nameEl.addEventListener('input', e => { splits[idx].n = e.target.value; recalcTotal(); });
+      amtEl .addEventListener('input', e => {
+        const v = e.target.value.replace(/[^\d]/g, '');
+        e.target.value = v;
+        splits[idx].a = Number(v) || 0;
+        recalcTotal();
+      });
+      rmBtn.addEventListener('click', () => {
+        splits.splice(idx, 1);
+        if (splits.length === 0) splits.push({ n: '', a: 0 });
+        renderSplits();
+        recalcTotal();
+      });
+      splitList.appendChild(el);
+    });
+    recalcTotal();
+  }
+  function recalcTotal() {
+    const total = splits.reduce((s, x) => s + (Number(x.a) || 0), 0);
+    const count = splits.filter(x => x.n || x.a > 0).length;
+    splitTotalNum.textContent = WL.yen(total);
+    splitTotalCount.textContent = count;
+  }
+  function addSplitRow() {
+    splits.push({ n: '', a: 0 });
+    renderSplits();
+  }
+  $('btn-add-split').addEventListener('click', addSplitRow);
+
+  // -------- Amount formatting (single) --------
+  const amountInput = $('f-amount');
+  amountInput.addEventListener('input', e => {
+    const raw = e.target.value.replace(/[^\d]/g, '');
+    e.target.value = raw ? '¥ ' + Number(raw).toLocaleString('ja-JP') : '';
+  });
+  function parseAmount(s) {
+    return Number((s || '').replace(/[^\d]/g, '')) || 0;
+  }
+
+  // -------- Import from keishawari.com --------
+  // Accepted query forms:
+  //   ?from=keishawari&d=<base64url JSON>   -> full payload
+  //   ?title=...&splits=[{"n":"佐藤","a":3000},...]
+  function tryImport() {
+    const from = WL.getQueryParam('from');
+    const dParam = WL.getQueryParam('d');
+    const titleParam = WL.getQueryParam('title');
+    const splitsParam = WL.getQueryParam('splits');
+    let imported = null;
+
+    if (dParam) {
+      try { imported = WL.decodeData(dParam); } catch (e) { console.warn(e); }
+    } else if (splitsParam) {
+      try {
+        const arr = JSON.parse(splitsParam);
+        imported = {
+          t: titleParam || '',
+          mode: 'split',
+          s: arr
+        };
+      } catch (e) { console.warn(e); }
+    } else if (titleParam) {
+      imported = { t: titleParam, mode: 'single' };
+    }
+
+    if (!imported) return;
+
+    if (imported.t) $('f-title').value = imported.t;
+    if (imported.m) $('f-memo').value = imported.m;
+    if (imported.a) amountInput.value = '¥ ' + Number(imported.a).toLocaleString('ja-JP');
+
+    if (Array.isArray(imported.s) && imported.s.length > 0) {
+      splits = imported.s.map(x => ({ n: x.n || '', a: Number(x.a) || 0 }));
+      setMode('split');
+      renderSplits();
+    }
+
+    const label = from === 'keishawari' ? 'keishawari' : '前の画面';
+    importBanner.classList.remove('is-hidden');
+    importBannerDetail.textContent =
+      (Array.isArray(imported.s) ? imported.s.length + '名分の' : '') + '情報を読み込みました。あとは振込先を入力するだけです。';
+  }
+
+  // -------- Form submit --------
+  $('form-create').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    formError.classList.remove('show');
+
+    const data = {
+      v: 1,
+      t: $('f-title').value.trim(),
+      m: $('f-memo').value.trim(),
+      mode: mode,
+      a: mode === 'single' ? parseAmount(amountInput.value) : 0,
+      s: mode === 'split' ? splits
+            .map(x => ({ n: x.n.trim(), a: Number(x.a) || 0 }))
+            .filter(x => x.n || x.a > 0)
+          : [],
+      p: {
+        n:  $('f-payee-name').value.trim(),
+        pp: $('f-paypay').value.trim().replace(/^@?/, '@'),
+        b: {
+          n:  $('f-bank-name').value.trim(),
+          br: $('f-bank-branch').value.trim(),
+          t:  $('f-bank-type').value,
+          a:  $('f-bank-acct').value.trim(),
+          h:  $('f-bank-holder').value.trim()
+        }
+      }
+    };
+
+    // @ only -> drop
+    if (data.p.pp === '@') data.p.pp = '';
+
+    if (!data.p.pp && !(data.p.b.n || data.p.b.a)) {
+      formError.textContent = '受け取り方法として、PayPay IDか銀行口座のどちらかを入力してください。';
+      formError.classList.add('show');
+      formError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (mode === 'split' && data.s.length === 0) {
+      formError.textContent = '個別金額モードでは、最低1名の名前を入力してください。';
+      formError.classList.add('show');
+      return;
+    }
+
+    showShareScreen(data);
+  });
+
+  // -------- Share screen --------
+  function showShareScreen(data) {
+    const token = WL.encodeData(data);
+    const url   = WL.buildShareUrl(token);
+    $('share-url-text').textContent = url;
+
+    // Render QR if available
+    const wrap = $('qr-wrap');
+    wrap.innerHTML = '';
+    if (typeof QRCode !== 'undefined') {
+      try {
+        new QRCode(wrap, {
+          text: url,
+          width: 200,
+          height: 200,
+          colorDark: '#1a1614',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      } catch (e) {
+        wrap.innerHTML = '<div style="font-size:11px;color:var(--ink-mute)">QRを生成できませんでした</div>';
+      }
+    } else {
+      wrap.innerHTML = '<div style="font-size:11px;color:var(--ink-mute)">QRライブラリを読み込めませんでした</div>';
+    }
+
+    // Wire buttons
+    $('btn-copy-url').onclick = async () => {
+      const ok = await WL.copy(url);
+      WL.toast(ok ? '共有用URLをコピーしました' : 'コピーできませんでした');
+    };
+    $('btn-share').onclick = async () => {
+      const shared = await WL.share({
+        title: data.t || '割り勘link',
+        text: data.t ? `「${data.t}」のお支払いをお願いします` : 'お支払いのお願い',
+        url
+      });
+      if (!shared) {
+        const ok = await WL.copy(url);
+        WL.toast(ok ? 'URLをコピーしました' : '共有できませんでした');
+      }
+    };
+
+    screenCreate.classList.add('is-hidden');
+    screenShare .classList.remove('is-hidden');
+    window.scrollTo({ top: 0 });
+  }
+
+  // -------- Back to edit --------
+  $('btn-back-edit').addEventListener('click', () => {
+    screenShare .classList.add('is-hidden');
+    screenCreate.classList.remove('is-hidden');
+    window.scrollTo({ top: 0 });
+  });
+
+  // -------- Init --------
+  setMode('single');
+  tryImport();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#c0392b">
+<meta name="robots" content="noindex">
+<title>割り勘link — お支払いのお願い</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="device-frame">
+
+  <a href="./" class="brand">
+    <div class="brand-mark">割</div>
+    <div>
+      <div class="brand-name">割り勘<span class="accent">link</span></div>
+      <div class="brand-sub">WARIKAN LINK</div>
+    </div>
+  </a>
+
+  <main id="pay-root"></main>
+
+</div>
+
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  'use strict';
+  const root = document.getElementById('pay-root');
+
+  // ---------- decode ----------
+  const token = WL.getHashToken();
+  if (!token) {
+    renderEmpty('リンクが正しくありません', 'URLに支払い情報が含まれていません。送信者から再度受け取ってください。');
+    return;
+  }
+
+  let data;
+  try {
+    data = WL.normalizeData(WL.decodeData(token));
+  } catch (e) {
+    console.error(e);
+    renderEmpty('リンクを読み取れませんでした', 'URLが破損しているか、古い形式の可能性があります。');
+    return;
+  }
+
+  // ---------- render ----------
+  if (data.mode === 'split' && data.s.length > 0) {
+    renderSplitPicker(data);
+  } else {
+    renderPay(data, null);
+  }
+
+  // ---------- split picker ----------
+  function renderSplitPicker(d) {
+    const total = d.s.reduce((s, x) => s + (Number(x.a) || 0), 0);
+
+    root.innerHTML = `
+      <div class="pay-header">
+        <div class="pay-title">${WL.esc(d.t || 'お支払いのお願い')}</div>
+        ${d.p.n ? `<div class="pay-payee">支払い先: <span class="name">${WL.esc(d.p.n)}</span></div>` : ''}
+        ${d.m ? `<div class="pay-memo">${WL.esc(d.m)}</div>` : ''}
+      </div>
+
+      <div class="recipient-picker">
+        <div class="recipient-picker-title">あなたのお名前は?</div>
+        <div class="recipient-picker-sub">名前をタップすると、自分の支払い金額が表示されます。</div>
+        <div class="recipient-list">
+          ${d.s.map((x, i) => `
+            <button type="button" class="recipient-btn" data-i="${i}">
+              <span class="name">${WL.esc(x.n || '(名前未設定)')}</span>
+              <span class="amount">${WL.yen(x.a)}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="recipient-summary">
+          <span>合計</span>
+          <span><span class="num">${WL.yen(total)}</span> / ${d.s.length}人</span>
+        </div>
+      </div>
+
+      <div id="pay-detail"></div>
+
+      <p class="footer-note" style="margin-top:32px">
+        powered by <a href="./">割り勘link</a>
+      </p>
+    `;
+
+    root.querySelectorAll('.recipient-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        root.querySelectorAll('.recipient-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        const i = Number(btn.dataset.i);
+        const detailEl = document.getElementById('pay-detail');
+        detailEl.innerHTML = '';
+        renderPaymentDetail(d, d.s[i], detailEl);
+        detailEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+
+  // ---------- pay (single mode) ----------
+  function renderPay(d, recipient) {
+    const amount = recipient ? recipient.a : d.a;
+    root.innerHTML = `
+      <div class="pay-header">
+        <div class="pay-title">${WL.esc(d.t || 'お支払いのお願い')}</div>
+        ${d.p.n ? `<div class="pay-payee">支払い先: <span class="name">${WL.esc(d.p.n)}</span></div>` : ''}
+        ${amount > 0 ? `<div class="pay-amount"><span class="yen">¥</span>${WL.num(amount)}</div>` : '<div class="pay-amount" style="font-size:24px">金額は送信者に確認してください</div>'}
+        ${d.m ? `<div class="pay-memo">${WL.esc(d.m)}</div>` : ''}
+      </div>
+      <div id="pay-detail"></div>
+      <p class="footer-note" style="margin-top:32px">
+        powered by <a href="./">割り勘link</a>
+      </p>
+    `;
+    renderPaymentDetail(d, recipient, document.getElementById('pay-detail'));
+  }
+
+  // ---------- payment options ----------
+  function renderPaymentDetail(d, recipient, mount) {
+    const amount = recipient ? recipient.a : d.a;
+    const hasPP   = WL.hasPayPay(d.p);
+    const hasBank = WL.hasBank(d.p);
+
+    if (recipient) {
+      mount.innerHTML += `
+        <div class="pay-header" style="border-bottom:none;padding-bottom:0;margin-bottom:24px">
+          <div class="pay-title" style="font-size:14px"><span style="color:var(--vermilion);font-weight:700">${WL.esc(recipient.n)}</span> さんの支払い金額</div>
+          <div class="pay-amount"><span class="yen">¥</span>${WL.num(amount)}</div>
+        </div>
+      `;
+    }
+
+    let html = '';
+
+    if (hasPP) {
+      html += `
+        <div class="pay-section-label">PayPayで支払う</div>
+        <button type="button" class="paypay-btn" id="btn-paypay">
+          <span class="paypay-btn-icon">PP</span>
+          PayPayアプリを開く
+        </button>
+        <div class="paypay-id-display" id="paypay-id-display" style="background:#fff;border:1px solid var(--line-soft);color:var(--ink)">
+          ${WL.esc(d.p.pp)}
+        </div>
+        <p class="paypay-hint">
+          タップでPayPay IDをコピーし、PayPayアプリを起動します。<br>
+          送金画面で貼り付け、金額を入力してください。
+        </p>
+      `;
+    }
+
+    if (hasPP && hasBank) {
+      html += '<div class="divider">または</div>';
+    }
+
+    if (hasBank) {
+      const b = d.p.b;
+      html += `
+        <div class="pay-section-label">銀行振込で支払う</div>
+        <div class="bank-card">
+          ${b.n  ? bankRow('銀行',   b.n,  true) : ''}
+          ${b.br ? bankRow('支店',   b.br, true) : ''}
+          ${b.t  ? bankRow('種別',   b.t,  false) : ''}
+          ${b.a  ? bankRow('口座番号', b.a, true, true) : ''}
+          ${b.h  ? bankRow('名義',   b.h,  true) : ''}
+        </div>
+        <button type="button" class="copy-all-btn" id="btn-copy-all">すべてまとめてコピー</button>
+      `;
+    }
+
+    if (!hasPP && !hasBank) {
+      html += `
+        <div class="empty-state">
+          <div class="icon">…</div>
+          <div class="title">受け取り方法が設定されていません</div>
+          <div class="sub">送信者にお問い合わせください。</div>
+        </div>
+      `;
+    }
+
+    mount.insertAdjacentHTML('beforeend', html);
+
+    // ---------- bind ----------
+    const ppBtn = document.getElementById('btn-paypay');
+    if (ppBtn) {
+      ppBtn.addEventListener('click', async () => {
+        const ok = await WL.copy(d.p.pp);
+        WL.toast(ok ? 'PayPay IDをコピーしました。PayPayアプリの「送る」から貼り付けてください' : 'コピーできませんでした');
+      });
+      const idDisp = document.getElementById('paypay-id-display');
+      if (idDisp) {
+        idDisp.style.cursor = 'pointer';
+        idDisp.title = 'タップでコピー';
+        idDisp.addEventListener('click', async () => {
+          const ok = await WL.copy(d.p.pp);
+          WL.toast(ok ? 'PayPay IDをコピーしました' : 'コピーできませんでした');
+        });
+      }
+    }
+
+    mount.querySelectorAll('.copy-btn[data-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const ok = await WL.copy(btn.dataset.copy);
+        WL.toast(ok ? 'コピーしました' : 'コピーできませんでした');
+      });
+    });
+
+    const copyAll = document.getElementById('btn-copy-all');
+    if (copyAll) {
+      copyAll.addEventListener('click', async () => {
+        const b = d.p.b;
+        const parts = [];
+        if (d.t) parts.push(`【${d.t}】`);
+        if (amount > 0) parts.push(`金額: ${WL.yen(amount)}`);
+        if (b.n)  parts.push(`銀行: ${b.n}`);
+        if (b.br) parts.push(`支店: ${b.br}`);
+        if (b.t)  parts.push(`種別: ${b.t}`);
+        if (b.a)  parts.push(`口座番号: ${b.a}`);
+        if (b.h)  parts.push(`名義: ${b.h}`);
+        const ok = await WL.copy(parts.join('\n'));
+        WL.toast(ok ? '振込情報をコピーしました' : 'コピーできませんでした');
+      });
+    }
+  }
+
+  function bankRow(label, value, copyable, isNum) {
+    const valHtml = isNum
+      ? `<span class="num">${WL.esc(value)}</span>`
+      : WL.esc(value);
+    const copyHtml = copyable
+      ? `<button class="copy-btn" data-copy="${WL.esc(value)}" aria-label="コピー">⧉</button>`
+      : '';
+    return `
+      <div class="bank-row">
+        <span class="bank-row-label">${label}</span>
+        <span class="bank-row-value">${valHtml}${copyHtml}</span>
+      </div>
+    `;
+  }
+
+  function renderEmpty(title, sub) {
+    root.innerHTML = `
+      <div class="empty-state">
+        <div class="icon">？</div>
+        <div class="title">${WL.esc(title)}</div>
+        <div class="sub">${WL.esc(sub)}</div>
+      </div>
+      <div style="text-align:center;margin-top:24px">
+        <a href="./" class="link-action-btn" style="background:var(--ink);color:var(--paper);border:none;padding:14px 24px">トップへ戻る</a>
+      </div>
+    `;
+  }
+
+})();
+</script>
+
+</body>
+</html>
