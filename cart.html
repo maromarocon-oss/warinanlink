@@ -3,28 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#B0492E">
+<meta name="theme-color" content="#1C1B19">
 <meta name="robots" content="noindex">
 <meta name="description" content="灯 AKARI COFFEE STAND のカート・購入手続きページ。">
 <title>カート ― 灯 AKARI COFFEE STAND</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
 <style>
   .cart-page-grid{ display:grid; grid-template-columns: 1.4fr 1fr; gap:56px; align-items:start; }
-  .cart-page-line{ display:flex; gap:18px; padding:22px 0; border-bottom:1px solid var(--line); }
-  .cart-page-media{ width:96px; height:96px; border-radius: var(--radius-md); flex-shrink:0; }
+  .cart-page-line{ display:flex; gap:18px; padding:22px 0; border-bottom:1px solid var(--hairline); }
+  .cart-page-media{ width:88px; height:88px; border-radius: var(--radius-sm); flex-shrink:0; background: var(--ink); }
   .cart-page-info{ flex:1; display:flex; flex-direction:column; gap:8px; }
   .cart-page-foot{ display:flex; align-items:center; justify-content:space-between; margin-top:6px; }
-  .summary-box{ background: var(--paper); border:1px solid var(--line); border-radius: var(--radius-lg); padding:28px; position:sticky; top:calc(var(--header-h) + 24px); }
+  .summary-box{ background: var(--panel); border:1px solid var(--hairline); border-radius: var(--radius-lg); padding:28px; position:sticky; top:calc(var(--header-h) + 24px); }
   .summary-row{ display:flex; justify-content:space-between; font-size:14px; padding:10px 0; }
-  .summary-row.total{ border-top:1px solid var(--line-strong); margin-top:10px; padding-top:18px; font-size:16px; }
-  .summary-row.total strong{ font-family: var(--font-sans); font-size:20px; }
+  .summary-row.total{ border-top:1px solid var(--hairline-strong); margin-top:10px; padding-top:18px; font-size:16px; }
+  .summary-row.total strong{ font-family: var(--font-body); font-size:20px; }
   .empty-cart{ text-align:center; padding:80px 20px; }
-  .empty-cart .mark{ font-family: var(--font-serif); font-size:48px; color: var(--brick); margin-bottom:20px; }
+  .empty-cart .mark{ font-family: var(--font-display); font-weight:900; font-size:44px; color: var(--ember); margin-bottom:20px; }
   .thanks-panel{ text-align:center; padding:60px 20px; }
-  .thanks-panel .mark{ width:64px;height:64px;border-radius:50%;background:var(--sage-tint);color:var(--sage);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-family:var(--font-serif);font-size:26px; }
+  .thanks-panel .mark{ width:64px;height:64px;border-radius:50%;background:var(--sage-tint);color:var(--sage);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;font-family:var(--font-display);font-weight:800;font-size:26px; }
   @media (max-width: 900px){ .cart-page-grid{ grid-template-columns: 1fr; } .summary-box{ position:static; } }
 </style>
 </head>
@@ -138,7 +138,7 @@
             <span class="brand-sub">COFFEE STAND</span>
           </div>
         </a>
-        <p>専門性のある一杯を、灯すように。川口の街に生まれる、スペシャルティコーヒーとチャイのスタンドです。</p>
+        <p>鋳物の街・川口に生まれる、スペシャルティコーヒーとチャイの小さな店です。</p>
       </div>
       <div class="footer-col">
         <h4>ショップ</h4>
@@ -210,7 +210,7 @@
 
     linesWrap.innerHTML = lines.map(l => `
       <div class="cart-page-line" data-index="${l.index}">
-        <div class="cart-page-media ${AKARI.mediaClass(l.product)}"></div>
+        <div class="cart-page-media"></div>
         <div class="cart-page-info">
           <div>
             <div class="cart-line-name" style="font-size:16px">${l.product.name}</div>

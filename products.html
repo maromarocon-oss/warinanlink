@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#B0492E">
+<meta name="theme-color" content="#1C1B19">
 <meta name="description" content="灯 AKARI COFFEE STANDのオンラインストア。産地別のスペシャルティコーヒーとオリジナルチャイブレンドをお届けします。店内メニューのご紹介もこちら。">
 <title>オンラインストア・メニュー ― 灯 AKARI COFFEE STAND</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -56,35 +56,35 @@
 
 <main>
 
-  <section class="hero" style="padding-bottom:48px">
+  <section class="hero" style="padding-bottom:40px">
     <div class="wrap">
       <span class="eyebrow">ONLINE STORE</span>
-      <h1 class="hero-title" style="max-width:680px">豆とチャイを、<br><span class="accent">おうちでも。</span></h1>
-      <p class="hero-sub" style="max-width:560px">店舗のオープンに先立ち、産地別のスペシャルティコーヒーとオリジナルチャイブレンドをお届けしています。価格は現時点の参考価格です。</p>
+      <h1 class="page-title">豆を、<span class="accent">選ぶ</span>。</h1>
+      <p class="page-lead" style="margin-left:auto;margin-right:auto">店舗のオープンに先立ち、産地別のコーヒーとオリジナルチャイブレンドをお届けしています。価格は現時点の参考価格です。</p>
     </div>
   </section>
 
-  <!-- ============ Store grid ============ -->
-  <section class="section" style="padding-top:24px">
+  <!-- ============ Store: spec list ============ -->
+  <section class="section" style="padding-top:16px">
     <div class="wrap">
       <div class="filter-bar" id="filterBar">
         <button type="button" class="filter-btn is-active" data-filter="all">すべて</button>
         <button type="button" class="filter-btn" data-filter="coffee">スペシャルティコーヒー</button>
         <button type="button" class="filter-btn" data-filter="chai">オリジナルチャイ</button>
       </div>
-      <div class="grid grid-4" id="storeGrid"></div>
+      <div class="spec-list" id="storeList"></div>
     </div>
   </section>
 
   <!-- ============ Subscription note ============ -->
   <section class="section-tight section-alt">
     <div class="wrap">
-      <div class="cta-band" style="background: linear-gradient(150deg, var(--coffee-900), #3B2718 75%);">
+      <div class="cta-band">
         <div>
-          <h2>定期便でのお届けも準備中です。</h2>
-          <p>お気に入りの一杯を切らさないよう、2週間・4週間おきなどの定期お届けサービスを検討しています。詳細はオープン時にご案内します。</p>
+          <h2>定期便で、切らさずに飲む。</h2>
+          <p>お気に入りの豆やチャイを、決めた間隔で届ける定期便を準備中です。詳細はオープン時にご案内します。</p>
         </div>
-        <span class="badge" style="background:rgba(255,255,255,.14); color:#F6E9D6">近日公開</span>
+        <span class="badge" style="background:transparent; border-color:#fff; color:#fff">近日公開</span>
       </div>
     </div>
   </section>
@@ -114,7 +114,7 @@
             <span class="brand-sub">COFFEE STAND</span>
           </div>
         </a>
-        <p>専門性のある一杯を、灯すように。川口の街に生まれる、スペシャルティコーヒーとチャイのスタンドです。</p>
+        <p>鋳物の街・川口に生まれる、スペシャルティコーヒーとチャイの小さな店です。</p>
       </div>
       <div class="footer-col">
         <h4>ショップ</h4>
@@ -169,14 +169,14 @@
 <script src="assets/app.js"></script>
 <script>
 (function () {
-  const grid = document.getElementById('storeGrid');
+  const list = document.getElementById('storeList');
   const bar = document.getElementById('filterBar');
 
   function render(filter) {
-    const list = filter === 'all'
+    const items = filter === 'all'
       ? AKARI.DATA.products
       : AKARI.DATA.products.filter(p => p.category === filter);
-    grid.innerHTML = list.map(AKARI.productCardHTML).join('');
+    list.innerHTML = items.map(AKARI.productRowHTML).join('');
   }
 
   bar.addEventListener('click', (e) => {

@@ -84,8 +84,6 @@
   }
 
   /* -------------------- render: cart drawer -------------------- */
-  function mediaClass(product) { return 'pc-media-' + (product.media || 1); }
-
   function renderCartDrawer() {
     const body = $('#cartDrawerBody');
     const foot = $('#cartDrawerFoot');
@@ -101,7 +99,7 @@
 
     body.innerHTML = lines.map(l => `
       <div class="cart-line" data-index="${l.index}">
-        <div class="cart-line-media ${mediaClass(l.product)}"></div>
+        <div class="cart-line-media"></div>
         <div class="cart-line-info">
           <div class="cart-line-name">${l.product.name}</div>
           <div class="cart-line-variant">${l.variant.label} × ${l.qty}</div>
@@ -121,24 +119,19 @@
     });
   }
 
-  /* -------------------- product card markup (shared) -------------------- */
-  function productCardHTML(product) {
+  /* -------------------- product row markup (spec list, shared) -------------------- */
+  function productRowHTML(product) {
     const price = product.variants[0].price;
     const multi = product.variants.length > 1;
+    const specs = product.notes.map(n => `<span>${n.label} <b>${n.val}</b></span>`).join('');
     return `
-      <a class="product-card" href="product.html?id=${product.id}">
-        <div class="product-card-media ${mediaClass(product)}">
-          ${product.badge ? `<span class="badge pc-badge">${product.badge}</span>` : ''}
-          <span class="pc-mark">灯</span>
+      <a class="spec-row" href="product.html?id=${product.id}">
+        <div>
+          <div class="spec-row-name">${product.name}${product.badge ? `<span class="badge">${product.badge}</span>` : ''}</div>
+          <p class="spec-row-lead">${product.lead}</p>
+          <div class="spec-row-tags">${specs}</div>
         </div>
-        <div class="product-card-body">
-          <span class="product-card-cat">${product.category === 'coffee' ? 'SPECIALTY COFFEE' : 'ORIGINAL CHAI'}</span>
-          <h3 class="product-card-name">${product.name}</h3>
-          <p class="product-card-note">${product.lead}</p>
-          <div class="product-card-foot">
-            <span class="price">${multi ? '<span class="from">from</span>' : ''}${formatYen(price)}</span>
-          </div>
-        </div>
+        <div class="spec-row-price">${multi ? '<span class="from">from</span>' : ''}${formatYen(price)}</div>
       </a>
     `;
   }
@@ -199,6 +192,6 @@
     getCart, setCart, addToCart, removeLine, setLineQty,
     enrichedLines, cartCount, cartSubtotal,
     renderCartDrawer, renderCartBadges,
-    productCardHTML, mediaClass, toast
+    productRowHTML, toast
   };
 })();

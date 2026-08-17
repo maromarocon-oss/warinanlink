@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#B0492E">
+<meta name="theme-color" content="#1C1B19">
 <meta name="description" content="灯 AKARI COFFEE STANDの商品詳細ページ。産地・焙煎・テイスティングノートをご確認のうえ、量をお選びいただけます。">
 <title>商品詳細 ― 灯 AKARI COFFEE STAND</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -55,7 +55,7 @@
 </div>
 
 <main>
-  <section class="section" style="padding-top:44px">
+  <section class="section" style="padding-top:40px">
     <div class="wrap">
       <div class="pd-breadcrumb">
         <a href="products.html">オンラインストア</a> / <span id="pdBreadcrumbName"></span>
@@ -63,7 +63,9 @@
 
       <div class="pd-grid">
         <div class="pd-media" id="pdMedia">
-          <span class="pc-mark" id="pdMediaMark">灯</span>
+          <span class="pd-media-mark">灯</span>
+          <span class="pd-media-name" id="pdMediaName"></span>
+          <span class="pd-media-spec" id="pdMediaSpec"></span>
         </div>
 
         <div>
@@ -97,15 +99,15 @@
 
           <div class="pd-detail-block">
             <h3>商品について</h3>
-            <p id="pdDesc" style="color:var(--coffee-700); font-size:14.5px"></p>
+            <p id="pdDesc" style="color:var(--ink-soft); font-size:14.5px"></p>
             <div class="notes-grid" id="pdNotes"></div>
           </div>
         </div>
       </div>
 
-      <div class="pd-detail-block" style="margin-top:72px">
+      <div class="pd-detail-block" style="margin-top:64px">
         <h3>こちらもおすすめです</h3>
-        <div class="related-strip" id="pdRelated"></div>
+        <div class="spec-list" id="pdRelated"></div>
       </div>
     </div>
   </section>
@@ -122,7 +124,7 @@
             <span class="brand-sub">COFFEE STAND</span>
           </div>
         </a>
-        <p>専門性のある一杯を、灯すように。川口の街に生まれる、スペシャルティコーヒーとチャイのスタンドです。</p>
+        <p>鋳物の街・川口に生まれる、スペシャルティコーヒーとチャイの小さな店です。</p>
       </div>
       <div class="footer-col">
         <h4>ショップ</h4>
@@ -184,7 +186,8 @@
 
   document.title = product.name + ' ― 灯 AKARI COFFEE STAND';
   document.getElementById('pdBreadcrumbName').textContent = product.name;
-  document.getElementById('pdMedia').classList.add(AKARI.mediaClass(product));
+  document.getElementById('pdMediaName').textContent = product.name;
+  document.getElementById('pdMediaSpec').textContent = product.notes[0] ? product.notes[0].val : '';
   document.getElementById('pdTitle').textContent = product.name;
   document.getElementById('pdLead').textContent = product.lead;
   document.getElementById('pdOrigin').textContent = product.origin;
@@ -241,7 +244,7 @@
 
   const related = AKARI.DATA.products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
   const fallback = related.length ? related : AKARI.DATA.products.filter(p => p.id !== product.id).slice(0, 3);
-  document.getElementById('pdRelated').innerHTML = fallback.map(AKARI.productCardHTML).join('');
+  document.getElementById('pdRelated').innerHTML = fallback.map(AKARI.productRowHTML).join('');
 })();
 </script>
 
