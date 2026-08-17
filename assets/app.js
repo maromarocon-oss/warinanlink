@@ -137,7 +137,6 @@
           <p class="product-card-note">${product.lead}</p>
           <div class="product-card-foot">
             <span class="price">${multi ? '<span class="from">from</span>' : ''}${formatYen(price)}</span>
-            <span class="tag">${product.origin}</span>
           </div>
         </div>
       </a>
