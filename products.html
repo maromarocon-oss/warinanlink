@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#B0492E">
+<meta name="description" content="灯 AKARI COFFEE STANDのオンラインストア。産地別のスペシャルティコーヒーとオリジナルチャイブレンドをお届けします。店内メニューのご紹介もこちら。">
+<title>オンラインストア・メニュー ― 灯 AKARI COFFEE STAND</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">灯</div>
+      <div class="brand-word">
+        <span class="brand-name">灯 <span class="accent">AKARI</span></span>
+        <span class="brand-sub">COFFEE STAND</span>
+      </div>
+    </a>
+    <nav class="nav-desktop">
+      <a href="products.html" class="is-active">オンラインストア</a>
+      <a href="about.html">ブランドストーリー</a>
+      <a href="space.html">レンタルスペース</a>
+      <a href="access.html">アクセス</a>
+    </nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn js-cart-open" aria-label="カートを開く">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="cart-count is-zero">0</span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle js-nav-open" aria-label="メニューを開く">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="nav-mobile">
+  <div class="nav-mobile-panel">
+    <button type="button" class="nav-mobile-close js-nav-close" aria-label="閉じる">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <a href="index.html">ホーム</a>
+    <a href="products.html">オンラインストア</a>
+    <a href="about.html">ブランドストーリー</a>
+    <a href="space.html">レンタルスペース</a>
+    <a href="access.html">店舗情報・アクセス</a>
+    <a href="cart.html">カート</a>
+  </div>
+</div>
+
+<main>
+
+  <section class="hero" style="padding-bottom:48px">
+    <div class="hero-glow g1"></div>
+    <div class="wrap">
+      <span class="eyebrow">ONLINE STORE</span>
+      <h1 class="hero-title" style="max-width:680px">豆とチャイを、<br><span class="accent">おうちでも。</span></h1>
+      <p class="hero-sub" style="max-width:560px">店舗のオープンに先立ち、産地別のスペシャルティコーヒーとオリジナルチャイブレンドをお届けしています。価格は現時点の参考価格です。</p>
+    </div>
+  </section>
+
+  <!-- ============ Store grid ============ -->
+  <section class="section" style="padding-top:24px">
+    <div class="wrap">
+      <div class="filter-bar" id="filterBar">
+        <button type="button" class="filter-btn is-active" data-filter="all">すべて</button>
+        <button type="button" class="filter-btn" data-filter="coffee">スペシャルティコーヒー</button>
+        <button type="button" class="filter-btn" data-filter="chai">オリジナルチャイ</button>
+      </div>
+      <div class="grid grid-4" id="storeGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ Subscription note ============ -->
+  <section class="section-tight section-alt">
+    <div class="wrap">
+      <div class="cta-band" style="background: radial-gradient(circle at 80% 20%, rgba(110,124,76,.4), transparent 55%), linear-gradient(150deg, var(--coffee-900), #3B2718 75%);">
+        <div>
+          <h2>定期便でのお届けも準備中です。</h2>
+          <p>お気に入りの一杯を切らさないよう、2週間・4週間おきなどの定期お届けサービスを検討しています。詳細はオープン時にご案内します。</p>
+        </div>
+        <span class="badge" style="background:rgba(255,255,255,.14); color:#F6E9D6">近日公開</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ In-store menu ============ -->
+  <section class="section" id="menu">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">CAFE MENU</span>
+        <h2>店内メニューのご紹介</h2>
+        <p class="lead">開業後、店内・スタンドでご提供予定のメニューです。仕入れ状況により内容・価格が変わる場合があります。オンラインではご購入いただけません。</p>
+      </div>
+      <div class="grid grid-2" id="menuGroups"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <div class="brand-mark">灯</div>
+          <div class="brand-word">
+            <span class="brand-name">灯 <span class="accent">AKARI</span></span>
+            <span class="brand-sub">COFFEE STAND</span>
+          </div>
+        </a>
+        <p>専門性のある一杯を、灯すように。川口の街に生まれる、スペシャルティコーヒーとチャイのスタンドです。</p>
+      </div>
+      <div class="footer-col">
+        <h4>ショップ</h4>
+        <ul>
+          <li><a href="products.html">オンラインストア</a></li>
+          <li><a href="products.html#menu">店内メニュー</a></li>
+          <li><a href="cart.html">カート</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ブランド</h4>
+        <ul>
+          <li><a href="about.html">ブランドストーリー</a></li>
+          <li><a href="space.html">レンタルスペース</a></li>
+          <li><a href="access.html">店舗情報・アクセス</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>お問い合わせ</h4>
+        <ul>
+          <li><a href="access.html#contact">お問い合わせ</a></li>
+          <li><a href="#">Instagram(準備中)</a></li>
+          <li><a href="#">note(準備中)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span class="js-year"></span> AKARI COFFEE STAND(準備中)</span>
+      <span>埼玉県川口市本町3丁目 ― 川口駅・川口元郷駅より徒歩圏内(開業準備中)</span>
+    </div>
+  </div>
+</footer>
+
+<div class="cart-drawer">
+  <div class="cart-drawer-panel">
+    <div class="cart-drawer-head">
+      <h3>カート</h3>
+      <button type="button" class="icon-btn js-cart-close" aria-label="閉じる">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="cart-drawer-body" id="cartDrawerBody"></div>
+    <div class="cart-drawer-foot" id="cartDrawerFoot" style="display:none">
+      <div class="cart-subtotal"><span>小計</span><strong id="cartSubtotal">¥0</strong></div>
+      <a href="cart.html" class="btn btn-primary btn-block">レジに進む</a>
+      <p class="form-note" style="margin-top:12px;margin-bottom:0">送料・お支払い方法は実店舗オープンにあわせて確定します</p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const grid = document.getElementById('storeGrid');
+  const bar = document.getElementById('filterBar');
+
+  function render(filter) {
+    const list = filter === 'all'
+      ? AKARI.DATA.products
+      : AKARI.DATA.products.filter(p => p.category === filter);
+    grid.innerHTML = list.map(AKARI.productCardHTML).join('');
+  }
+
+  bar.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    AKARI.$$('.filter-btn', bar).forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    render(btn.dataset.filter);
+  });
+
+  render('all');
+
+  document.getElementById('menuGroups').innerHTML = AKARI.DATA.menuGroups.map(group => `
+    <div>
+      <h3 class="menu-group-title">${group.title}</h3>
+      <div class="menu-list">
+        ${group.items.map(item => `
+          <div class="menu-row">
+            <div>
+              <span class="menu-row-name">${item.name}</span>
+              ${item.note ? `<span class="menu-row-note">${item.note}</span>` : ''}
+            </div>
+            <span class="menu-row-price">${item.price}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+})();
+</script>
+
+</body>
+</html>
