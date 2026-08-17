@@ -128,7 +128,7 @@
     return `
       <a class="product-card" href="product.html?id=${product.id}">
         <div class="product-card-media ${mediaClass(product)}">
-          ${product.badge ? `<span class="badge pc-badge"><span class="badge-dot"></span>${product.badge}</span>` : ''}
+          ${product.badge ? `<span class="badge pc-badge">${product.badge}</span>` : ''}
           <span class="pc-mark">灯</span>
         </div>
         <div class="product-card-body">
