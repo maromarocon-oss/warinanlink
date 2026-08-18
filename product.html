@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1C1B19">
+<meta name="description" content="灯 AKARI COFFEE STANDの商品詳細ページ。産地・焙煎・テイスティングノートをご確認のうえ、量をお選びいただけます。">
+<title>商品詳細 ― 灯 AKARI COFFEE STAND</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      <div class="brand-mark">灯</div>
+      <div class="brand-word">
+        <span class="brand-name">灯 <span class="accent">AKARI</span></span>
+        <span class="brand-sub">COFFEE STAND</span>
+      </div>
+    </a>
+    <nav class="nav-desktop">
+      <a href="products.html" class="is-active">オンラインストア</a>
+      <a href="about.html">ブランドストーリー</a>
+      <a href="package.html">パッケージ案</a>
+      <a href="access.html">アクセス</a>
+    </nav>
+    <div class="header-actions">
+      <button type="button" class="icon-btn js-cart-open" aria-label="カートを開く">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+        <span class="cart-count is-zero">0</span>
+      </button>
+      <button type="button" class="icon-btn nav-toggle js-nav-open" aria-label="メニューを開く">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="nav-mobile">
+  <div class="nav-mobile-panel">
+    <button type="button" class="nav-mobile-close js-nav-close" aria-label="閉じる">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <a href="index.html">ホーム</a>
+    <a href="products.html">オンラインストア</a>
+    <a href="about.html">ブランドストーリー</a>
+    <a href="package.html">パッケージ案</a>
+    <a href="access.html">店舗情報・アクセス</a>
+    <a href="cart.html">カート</a>
+  </div>
+</div>
+
+<main>
+  <section class="section" style="padding-top:40px">
+    <div class="wrap">
+      <div class="pd-breadcrumb">
+        <a href="products.html">オンラインストア</a> / <span id="pdBreadcrumbName"></span>
+      </div>
+
+      <div class="pd-grid">
+        <div class="pd-media" id="pdMedia">
+          <span class="pd-media-mark">灯</span>
+          <span class="pd-media-name" id="pdMediaName"></span>
+          <span class="pd-media-spec" id="pdMediaSpec"></span>
+        </div>
+
+        <div>
+          <span class="badge" id="pdBadge" style="display:none"><span id="pdBadgeText"></span></span>
+          <h1 class="pd-title" id="pdTitle"></h1>
+          <p class="pd-note" id="pdLead"></p>
+          <div class="pd-tags">
+            <span class="tag" id="pdOrigin"></span>
+          </div>
+
+          <div class="pd-price" id="pdPrice"></div>
+
+          <div class="option-group">
+            <span class="option-label">量を選ぶ</span>
+            <div class="option-row" id="pdVariants"></div>
+          </div>
+
+          <div class="qty-row">
+            <span class="option-label" style="margin:0">数量</span>
+            <div class="qty-control">
+              <button type="button" id="pdQtyMinus" aria-label="数量を減らす">−</button>
+              <input type="text" id="pdQty" value="1" inputmode="numeric" aria-label="数量">
+              <button type="button" id="pdQtyPlus" aria-label="数量を増やす">+</button>
+            </div>
+          </div>
+
+          <div class="pd-actions">
+            <button type="button" class="btn btn-primary btn-block" id="pdAddBtn">カートに追加する</button>
+          </div>
+          <p class="pd-add-note" id="pdAddNote">カートに追加しました。</p>
+
+          <div class="pd-detail-block">
+            <h3>商品について</h3>
+            <p id="pdDesc" style="color:var(--ink-soft); font-size:14.5px"></p>
+            <div class="notes-grid" id="pdNotes"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pd-detail-block" style="margin-top:64px">
+        <h3>こちらもおすすめです</h3>
+        <div class="spec-list" id="pdRelated"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <div class="brand-mark">灯</div>
+          <div class="brand-word">
+            <span class="brand-name">灯 <span class="accent">AKARI</span></span>
+            <span class="brand-sub">COFFEE STAND</span>
+          </div>
+        </a>
+        <p>鋳物の街・川口に生まれる、スペシャルティコーヒーとチャイの小さな店です。</p>
+      </div>
+      <div class="footer-col">
+        <h4>ショップ</h4>
+        <ul>
+          <li><a href="products.html">オンラインストア</a></li>
+          <li><a href="products.html#menu">店内メニュー</a></li>
+          <li><a href="cart.html">カート</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ブランド</h4>
+        <ul>
+          <li><a href="about.html">ブランドストーリー</a></li>
+          <li><a href="package.html">パッケージ案</a></li>
+          <li><a href="access.html">店舗情報・アクセス</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>お問い合わせ</h4>
+        <ul>
+          <li><a href="access.html#contact">お問い合わせ</a></li>
+          <li><a href="#">Instagram(準備中)</a></li>
+          <li><a href="#">note(準備中)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span class="js-year"></span> AKARI COFFEE STAND(準備中)</span>
+      <span>埼玉県川口市本町3丁目 ― 川口駅・川口元郷駅より徒歩圏内(開業準備中)</span>
+    </div>
+  </div>
+</footer>
+
+<div class="cart-drawer">
+  <div class="cart-drawer-panel">
+    <div class="cart-drawer-head">
+      <h3>カート</h3>
+      <button type="button" class="icon-btn js-cart-close" aria-label="閉じる">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="cart-drawer-body" id="cartDrawerBody"></div>
+    <div class="cart-drawer-foot" id="cartDrawerFoot" style="display:none">
+      <div class="cart-subtotal"><span>小計</span><strong id="cartSubtotal">¥0</strong></div>
+      <a href="cart.html" class="btn btn-primary btn-block">レジに進む</a>
+      <p class="form-note" style="margin-top:12px;margin-bottom:0">送料・お支払い方法は実店舗オープンにあわせて確定します</p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const product = AKARI.getProduct(params.get('id')) || AKARI.DATA.products[0];
+  let selectedVariant = product.variants[0];
+  let qty = 1;
+
+  document.title = product.name + ' ― 灯 AKARI COFFEE STAND';
+  document.getElementById('pdBreadcrumbName').textContent = product.name;
+  document.getElementById('pdMediaName').textContent = product.name;
+  document.getElementById('pdMediaSpec').textContent = product.notes[0] ? product.notes[0].val : '';
+  document.getElementById('pdTitle').textContent = product.name;
+  document.getElementById('pdLead').textContent = product.lead;
+  document.getElementById('pdOrigin').textContent = product.origin;
+  document.getElementById('pdDesc').textContent = product.desc;
+
+  if (product.badge) {
+    document.getElementById('pdBadge').style.display = 'inline-flex';
+    document.getElementById('pdBadgeText').textContent = product.badge;
+  }
+
+  document.getElementById('pdNotes').innerHTML = product.notes.map(n => `
+    <div class="note-item">
+      <div class="n-label">${n.label}</div>
+      <div class="n-val">${n.val}</div>
+    </div>
+  `).join('');
+
+  const variantWrap = document.getElementById('pdVariants');
+  function renderVariants() {
+    variantWrap.innerHTML = product.variants.map(v => `
+      <button type="button" class="option-chip ${v.id === selectedVariant.id ? 'is-active' : ''}" data-variant="${v.id}">${v.label}</button>
+    `).join('');
+  }
+  renderVariants();
+  variantWrap.addEventListener('click', (e) => {
+    const btn = e.target.closest('.option-chip');
+    if (!btn) return;
+    selectedVariant = product.variants.find(v => v.id === btn.dataset.variant);
+    renderVariants();
+    renderPrice();
+  });
+
+  function renderPrice() {
+    document.getElementById('pdPrice').textContent = AKARI.formatYen(selectedVariant.price);
+  }
+  renderPrice();
+
+  const qtyInput = document.getElementById('pdQty');
+  function setQty(n) {
+    qty = Math.max(1, Math.min(20, n));
+    qtyInput.value = qty;
+  }
+  document.getElementById('pdQtyMinus').addEventListener('click', () => setQty(qty - 1));
+  document.getElementById('pdQtyPlus').addEventListener('click', () => setQty(qty + 1));
+  qtyInput.addEventListener('change', () => setQty(parseInt(qtyInput.value, 10) || 1));
+
+  const addNote = document.getElementById('pdAddNote');
+  document.getElementById('pdAddBtn').addEventListener('click', () => {
+    AKARI.addToCart(product.id, selectedVariant.id, qty);
+    AKARI.toast(product.name + '(' + selectedVariant.label + ')をカートに追加しました');
+    addNote.classList.add('show');
+    setTimeout(() => addNote.classList.remove('show'), 2000);
+  });
+
+  const related = AKARI.DATA.products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+  const fallback = related.length ? related : AKARI.DATA.products.filter(p => p.id !== product.id).slice(0, 3);
+  document.getElementById('pdRelated').innerHTML = fallback.map(AKARI.productRowHTML).join('');
+})();
+</script>
+
+</body>
+</html>

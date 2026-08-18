@@ -1,189 +1,197 @@
-/* =========================================================
- *  割り勘link  —  shared utilities
- *
- *  Data is encoded into the URL fragment (#) so that it is
- *  never sent to any server. The schema is intentionally
- *  short to keep links compact:
- *
- *    {
- *      v:  1,                // schema version
- *      t:  string,           // title
- *      m:  string,           // memo / due note
- *      mode: "single"|"split",
- *      a:  number,           // amount (single mode)
- *      s:  [{n,a}, ...],     // splits (split mode)
- *      p:  {                 // payee
- *        n:  string,         // display name
- *        pp: string,         // PayPay ID
- *        b:  { n, br, t, a, h }   // bank
- *      }
- *    }
- * ========================================================= */
+/* ==========================================================================
+   灯 AKARI COFFEE STAND ― Shared front-end logic
+   ナビ開閉 / カート(localStorage) / トースト / 商品カード描画
+   ========================================================================== */
 
-(function (global) {
+(function () {
   'use strict';
 
-  // ---------- base64url codec for UTF-8 JSON ----------
-  function b64urlEncode(str) {
-    const utf8 = new TextEncoder().encode(str);
-    let bin = '';
-    for (let i = 0; i < utf8.length; i++) bin += String.fromCharCode(utf8[i]);
-    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  }
-  function b64urlDecode(s) {
-    let b64 = s.replace(/-/g, '+').replace(/_/g, '/');
-    while (b64.length % 4) b64 += '=';
-    const bin = atob(b64);
-    const bytes = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    return new TextDecoder().decode(bytes);
+  const DATA = window.AKARI_DATA || { products: [], menuGroups: [] };
+  const CART_KEY = 'akari_cart_v1';
+
+  const $  = (sel, ctx) => (ctx || document).querySelector(sel);
+  const $$ = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
+
+  function formatYen(n) {
+    return '¥' + Number(n || 0).toLocaleString('ja-JP');
   }
 
-  function encodeData(data) {
-    return b64urlEncode(JSON.stringify(data));
-  }
-  function decodeData(token) {
-    return JSON.parse(b64urlDecode(token));
+  function getProduct(id) {
+    return DATA.products.find(p => p.id === id) || null;
   }
 
-  // ---------- number / yen formatting ----------
-  const yenFmt = new Intl.NumberFormat('ja-JP');
-  function yen(n) {
-    if (n == null || isNaN(n)) return '—';
-    return '¥' + yenFmt.format(Math.round(n));
-  }
-  function num(n) {
-    if (n == null || isNaN(n)) return '—';
-    return yenFmt.format(Math.round(n));
-  }
-
-  // ---------- toast ----------
-  function ensureToastEl() {
-    let t = document.getElementById('toast');
-    if (!t) {
-      t = document.createElement('div');
-      t.id = 'toast';
-      t.className = 'toast';
-      document.body.appendChild(t);
-    }
-    return t;
-  }
-  let toastTimer = null;
-  function toast(msg) {
-    const t = ensureToastEl();
-    t.textContent = msg;
-    t.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
-  }
-
-  // ---------- clipboard ----------
-  async function copy(text) {
+  /* -------------------- cart storage -------------------- */
+  function getCart() {
     try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-      }
-      return true;
+      const raw = localStorage.getItem(CART_KEY);
+      const arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
     } catch (e) {
-      console.error('copy failed', e);
-      return false;
+      return [];
     }
   }
-
-  // ---------- web share ----------
-  async function share(opts) {
-    if (navigator.share) {
-      try {
-        await navigator.share(opts);
-        return true;
-      } catch (e) {
-        if (e && e.name !== 'AbortError') console.error('share failed', e);
-        return false;
-      }
+  function setCart(lines) {
+    localStorage.setItem(CART_KEY, JSON.stringify(lines));
+    renderCartBadges();
+    renderCartDrawer();
+  }
+  function addToCart(productId, variantId, qty) {
+    const lines = getCart();
+    const existing = lines.find(l => l.productId === productId && l.variantId === variantId);
+    if (existing) {
+      existing.qty += qty;
+    } else {
+      lines.push({ productId, variantId, qty });
     }
-    return false;
+    setCart(lines);
+  }
+  function removeLine(index) {
+    const lines = getCart();
+    lines.splice(index, 1);
+    setCart(lines);
+  }
+  function setLineQty(index, qty) {
+    const lines = getCart();
+    if (!lines[index]) return;
+    lines[index].qty = Math.max(1, qty);
+    setCart(lines);
+  }
+  function enrichedLines() {
+    return getCart().map((line, index) => {
+      const product = getProduct(line.productId);
+      if (!product) return null;
+      const variant = product.variants.find(v => v.id === line.variantId) || product.variants[0];
+      return {
+        index, product, variant, qty: line.qty,
+        lineTotal: variant.price * line.qty
+      };
+    }).filter(Boolean);
+  }
+  function cartCount() {
+    return getCart().reduce((s, l) => s + l.qty, 0);
+  }
+  function cartSubtotal() {
+    return enrichedLines().reduce((s, l) => s + l.lineTotal, 0);
   }
 
-  // ---------- URL helpers ----------
-  function getHashToken() {
-    const h = location.hash.replace(/^#/, '');
-    return h || '';
-  }
-  function getQueryParam(name) {
-    return new URLSearchParams(location.search).get(name);
-  }
-  function buildShareUrl(token) {
-    // The publicly shared URL points at p.html with token in fragment.
-    const base = location.origin + location.pathname.replace(/[^/]*$/, '');
-    return base + 'p.html#' + token;
+  /* -------------------- render: header cart badge -------------------- */
+  function renderCartBadges() {
+    const count = cartCount();
+    $$('.cart-count').forEach(el => {
+      el.textContent = String(count);
+      el.classList.toggle('is-zero', count === 0);
+    });
   }
 
-  // ---------- data validation ----------
-  function normalizeData(raw) {
-    if (!raw || typeof raw !== 'object') throw new Error('データが空です');
-    const d = {
-      v: raw.v || 1,
-      t: (raw.t || '').toString().slice(0, 80),
-      m: (raw.m || '').toString().slice(0, 200),
-      mode: raw.mode === 'split' ? 'split' : 'single',
-      a: Number(raw.a) || 0,
-      s: Array.isArray(raw.s) ? raw.s.map(x => ({
-        n: (x.n || '').toString().slice(0, 30),
-        a: Math.max(0, Math.round(Number(x.a) || 0))
-      })).filter(x => x.n || x.a > 0) : [],
-      p: {
-        n:  (raw.p && raw.p.n ) ? raw.p.n.toString().slice(0, 40) : '',
-        pp: (raw.p && raw.p.pp) ? raw.p.pp.toString().slice(0, 40) : '',
-        b:  (raw.p && raw.p.b) ? {
-          n:  (raw.p.b.n  || '').toString().slice(0, 30),
-          br: (raw.p.b.br || '').toString().slice(0, 30),
-          t:  (raw.p.b.t  || '').toString().slice(0, 10),
-          a:  (raw.p.b.a  || '').toString().slice(0, 20),
-          h:  (raw.p.b.h  || '').toString().slice(0, 40)
-        } : null
-      }
-    };
-    if (!d.p.pp && !(d.p.b && d.p.b.a)) {
-      throw new Error('PayPay IDか銀行口座のどちらかを入力してください');
+  /* -------------------- render: cart drawer -------------------- */
+  function renderCartDrawer() {
+    const body = $('#cartDrawerBody');
+    const foot = $('#cartDrawerFoot');
+    if (!body) return;
+    const lines = enrichedLines();
+
+    if (lines.length === 0) {
+      body.innerHTML = '<div class="cart-drawer-empty">カートには何も入っていません。<br>お好きな豆やチャイを探してみてください。</div>';
+      if (foot) foot.style.display = 'none';
+      return;
     }
-    if (d.mode === 'single' && d.a <= 0 && d.s.length === 0) {
-      // amount-less is allowed (e.g. "後で精算")
+    if (foot) foot.style.display = 'block';
+
+    body.innerHTML = lines.map(l => `
+      <div class="cart-line" data-index="${l.index}">
+        <div class="cart-line-media"></div>
+        <div class="cart-line-info">
+          <div class="cart-line-name">${l.product.name}</div>
+          <div class="cart-line-variant">${l.variant.label} × ${l.qty}</div>
+          <div class="cart-line-foot">
+            <span class="price">${formatYen(l.lineTotal)}</span>
+            <button type="button" class="cart-line-remove" data-remove="${l.index}">削除</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    const subtotalEl = $('#cartSubtotal');
+    if (subtotalEl) subtotalEl.textContent = formatYen(cartSubtotal());
+
+    $$('[data-remove]', body).forEach(btn => {
+      btn.addEventListener('click', () => removeLine(Number(btn.dataset.remove)));
+    });
+  }
+
+  /* -------------------- product row markup (spec list, shared) -------------------- */
+  function productRowHTML(product) {
+    const price = product.variants[0].price;
+    const multi = product.variants.length > 1;
+    const specs = product.notes.map(n => `<span>${n.label} <b>${n.val}</b></span>`).join('');
+    return `
+      <a class="spec-row" href="product.html?id=${product.id}">
+        <div>
+          <div class="spec-row-name">${product.name}${product.badge ? `<span class="badge">${product.badge}</span>` : ''}</div>
+          <p class="spec-row-lead">${product.lead}</p>
+          <div class="spec-row-tags">${specs}</div>
+        </div>
+        <div class="spec-row-price">${multi ? '<span class="from">from</span>' : ''}${formatYen(price)}</div>
+      </a>
+    `;
+  }
+
+  /* -------------------- toast -------------------- */
+  let toastTimer = null;
+  function toast(message) {
+    let el = $('#akariToast');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'akariToast';
+      el.className = 'toast';
+      document.body.appendChild(el);
     }
-    return d;
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
   }
 
-  function hasBank(p) {
-    return !!(p && p.b && (p.b.n || p.b.br || p.b.a || p.b.h));
-  }
-  function hasPayPay(p) {
-    return !!(p && p.pp);
+  /* -------------------- nav / drawer open-close -------------------- */
+  function initChrome() {
+    // mobile nav
+    const navToggle = $('.js-nav-open');
+    const navPanel   = $('.nav-mobile');
+    if (navToggle && navPanel) {
+      navToggle.addEventListener('click', () => navPanel.classList.add('is-open'));
+      $$('.js-nav-close', navPanel).forEach(btn => btn.addEventListener('click', () => navPanel.classList.remove('is-open')));
+      navPanel.addEventListener('click', (e) => { if (e.target === navPanel) navPanel.classList.remove('is-open'); });
+    }
+    // cart drawer
+    const cartPanel = $('.cart-drawer');
+    if (cartPanel) {
+      $$('.js-cart-open').forEach(btn => btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        cartPanel.classList.add('is-open');
+      }));
+      $$('.js-cart-close', cartPanel).forEach(btn => btn.addEventListener('click', () => cartPanel.classList.remove('is-open')));
+      cartPanel.addEventListener('click', (e) => { if (e.target === cartPanel) cartPanel.classList.remove('is-open'); });
+    }
+    // active nav link
+    const path = location.pathname.split('/').pop() || 'index.html';
+    $$('.nav-desktop a, .nav-mobile a').forEach(a => {
+      const href = a.getAttribute('href');
+      if (href === path) a.classList.add('is-active');
+    });
+    // footer year
+    $$('.js-year').forEach(el => { el.textContent = new Date().getFullYear(); });
+
+    renderCartBadges();
+    renderCartDrawer();
   }
 
-  // ---------- escapeHtml ----------
-  function esc(s) {
-    return (s == null ? '' : String(s))
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
+  document.addEventListener('DOMContentLoaded', initChrome);
 
-  // ---------- expose ----------
-  global.WL = {
-    encodeData, decodeData,
-    yen, num,
-    toast, copy, share,
-    getHashToken, getQueryParam, buildShareUrl,
-    normalizeData,
-    hasBank, hasPayPay,
-    esc
+  window.AKARI = {
+    DATA, $, $$, formatYen, getProduct,
+    getCart, setCart, addToCart, removeLine, setLineQty,
+    enrichedLines, cartCount, cartSubtotal,
+    renderCartDrawer, renderCartBadges,
+    productRowHTML, toast
   };
-
-})(window);
+})();

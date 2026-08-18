@@ -4,12 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1C1B19">
-<meta name="description" content="灯 AKARI COFFEE STAND ― 鋳物の街・川口に生まれる、スペシャルティコーヒーとチャイの小さな店。産地を選べる豆とオリジナルチャイブレンドを、オンラインストアで先行してお届けします。">
-<title>灯 AKARI COFFEE STAND ― 川口のスペシャルティコーヒー&チャイ</title>
+<meta name="description" content="灯 AKARI COFFEE STANDの店舗情報・アクセス。埼玉県川口市本町、川口駅・川口元郷駅より徒歩圏内に開業準備中です。">
+<title>店舗情報・アクセス ― 灯 AKARI COFFEE STAND</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
+<style>
+  .thanks-inline{ display:none; text-align:center; padding:40px 10px; }
+  .thanks-inline .mark{ width:56px;height:56px;border-radius:50%;background:var(--sage-tint);color:var(--sage);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-family:var(--font-display);font-weight:800;font-size:22px; }
+</style>
 </head>
 <body>
 
@@ -26,7 +30,7 @@
       <a href="products.html">オンラインストア</a>
       <a href="about.html">ブランドストーリー</a>
       <a href="package.html">パッケージ案</a>
-      <a href="access.html">アクセス</a>
+      <a href="access.html" class="is-active">アクセス</a>
     </nav>
     <div class="header-actions">
       <button type="button" class="icon-btn js-cart-open" aria-label="カートを開く">
@@ -56,78 +60,83 @@
 
 <main>
 
-  <!-- ============ Hero: 刻印プレート ============ -->
-  <section class="hero">
+  <section class="hero" style="padding-bottom:48px">
     <div class="wrap">
-      <div class="stamp-plate">
-        <div class="stamp-mark">灯</div>
-        <div class="plate-name">AKARI COFFEE STAND</div>
-        <h1 class="plate-tagline">鋳物の街に、<br><span class="accent">火</span>を入れる一杯を。</h1>
-      </div>
-
-      <p class="hero-sub" style="margin-top:28px; max-width:520px; text-align:center; color:var(--ink-soft); font-size:15.5px">
-        産地を選べるスペシャルティコーヒーと、インドから届くオリジナルチャイ。川口に、小さく本気の店を準備しています。
-      </p>
-
-      <div class="hero-actions">
-        <a href="products.html" class="btn btn-primary">豆を試す</a>
-        <a href="about.html" class="btn btn-outline">店の話を読む</a>
-      </div>
-
-      <div class="spec-strip">
-        <span>産地 <b>4+</b></span>
-        <span>営業 <b>7:00–21:00</b></span>
-        <span>徒歩 <b>7分</b>(川口駅より)</span>
-      </div>
-
-      <div class="status-line">
-        <span class="tick"></span>
-        <span>
-          <strong>現在地:開業準備中・川口</strong>
-          <span class="muted">店舗の詳細は決まり次第お知らせします。オンラインストアは先行してご利用いただけます。</span>
-        </span>
-      </div>
+      <span class="eyebrow">ACCESS</span>
+      <h1 class="page-title">店舗情報・<span class="accent">アクセス</span></h1>
+      <p class="page-lead">川口駅・川口元郷駅、両駅をつなぐ通りに面した立地に開業準備中です。詳細は決まり次第このページを更新します。</p>
     </div>
   </section>
 
-  <!-- ============ Products: spec list ============ -->
-  <section class="section">
+  <section class="section" style="padding-top:24px">
     <div class="wrap">
-      <div class="section-head">
-        <span class="eyebrow">ONLINE STORE</span>
-        <h2>豆を、まず一つ選ぶ。</h2>
-        <p class="lead">店のオープンに先立ち、産地別のコーヒーとオリジナルチャイブレンドをお届けしています。</p>
-      </div>
-      <div class="spec-list" id="homeFeatured"></div>
-      <div class="section-foot center">
-        <a href="products.html" class="btn btn-outline">すべての商品を見る</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ Brand short story ============ -->
-  <section class="section section-alt">
-    <div class="wrap" style="max-width:720px">
-      <span class="eyebrow">鋳物の街と、種火の話</span>
-      <h2 style="font-size:clamp(22px,3vw,28px); line-height:1.6">川口は、鉄を熱して型に流し込む「鋳物の街」です。</h2>
-      <p style="margin-top:20px; color:var(--ink-soft); font-size:15px; line-height:1.9">
-        鉄瓶や鍋を鋳込んできたこの街で、灯 AKARI COFFEE STANDは豆を焙煎し、チャイのスパイスをブレンドします。素材に正確な熱を加えて質を変えるという点で、コーヒーの仕事は鋳物の仕事とそう遠くありません。
-      </p>
-      <p style="margin-top:14px; color:var(--ink-soft); font-size:15px; line-height:1.9">
-        朝はスタンドで出勤前の一杯を、日中は10〜14席の店内でゆっくりと。ひとつの小さな種火が、時間帯によって違う形で街に灯ります。
-      </p>
-    </div>
-  </section>
-
-  <!-- ============ CTA band ============ -->
-  <section class="section">
-    <div class="wrap">
-      <div class="cta-band">
+      <div class="grid grid-2" style="gap:56px; align-items:flex-start">
         <div>
-          <h2>定期便で、切らさずに飲む。</h2>
-          <p>お気に入りの豆やチャイを、決めた間隔で届ける定期便を準備中です。詳細はオープン時にご案内します。</p>
+          <dl class="info-list">
+            <div class="info-row"><dt>店舗名</dt><dd>灯 AKARI COFFEE STAND(準備中・仮称)</dd></div>
+            <div class="info-row"><dt>住所</dt><dd>〒332-0012<br>埼玉県川口市本町3丁目10-3(予定物件)</dd></div>
+            <div class="info-row"><dt>アクセス</dt><dd>JR京浜東北線ほか「川口」駅より徒歩7分<br>埼玉高速鉄道「川口元郷」駅より徒歩10分</dd></div>
+            <div class="info-row"><dt>営業時間</dt><dd>7:00〜21:00(想定)<br>時間帯により提供メニューが異なります</dd></div>
+            <div class="info-row"><dt>定休日</dt><dd>現在検討中</dd></div>
+            <div class="info-row"><dt>客席数</dt><dd>10〜14席 / 床面積 約30㎡(9坪)</dd></div>
+            <div class="info-row"><dt>営業形態</dt><dd>スタンド販売・店内飲食</dd></div>
+          </dl>
+          <p class="form-note" style="margin-top:20px">※上記は事業計画段階の情報です。開業日・営業時間等は今後変更となる場合があります。</p>
         </div>
-        <a href="products.html" class="btn btn-primary">オンラインストアを見る</a>
+
+        <div>
+          <div class="map-frame">
+            <div class="map-pin">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="map-note">実際の地図は開業にあわせて掲載します</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Contact ============ -->
+  <section class="section section-alt" id="contact">
+    <div class="wrap">
+      <div class="grid grid-2" style="gap:56px; align-items:flex-start; max-width:920px; margin:0 auto">
+        <div>
+          <span class="eyebrow">CONTACT</span>
+          <h2 style="font-size:26px; margin-bottom:16px">お問い合わせ</h2>
+          <p class="muted" style="font-size:14.5px">オンラインストアのご注文以外の内容は、こちらのフォームからお気軽にお問い合わせください。</p>
+        </div>
+        <div>
+          <form id="contactForm">
+            <div class="form-field">
+              <label for="cName">お名前</label>
+              <input type="text" id="cName" required placeholder="山田 太郎">
+            </div>
+            <div class="form-field">
+              <label for="cEmail">メールアドレス</label>
+              <input type="email" id="cEmail" required placeholder="you@example.com">
+            </div>
+            <div class="form-field">
+              <label for="cCategory">お問い合わせ種別</label>
+              <select id="cCategory">
+                <option>ご来店・メニューについて</option>
+                <option>オンラインストアについて</option>
+                <option>取材・お仕事のご相談</option>
+                <option>その他</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="cMessage">お問い合わせ内容</label>
+              <textarea id="cMessage" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">送信する(仮)</button>
+            <p class="form-note" style="margin-top:14px; margin-bottom:0">※本サイトは開業準備中のプレビューです。実際のご連絡は開業準備の進捗にあわせて対応します。</p>
+          </form>
+          <div class="thanks-inline" id="contactThanks">
+            <div class="mark">✓</div>
+            <h3 style="font-size:18px; margin-bottom:8px">お問い合わせを受け付けました(デモ)</h3>
+            <p class="muted" style="font-size:13.5px">実際のご返信は開業準備の状況にあわせて対応いたします。</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -199,8 +208,11 @@
 <script src="assets/data.js"></script>
 <script src="assets/app.js"></script>
 <script>
-  document.getElementById('homeFeatured').innerHTML =
-    AKARI.DATA.products.slice(0, 4).map(AKARI.productRowHTML).join('');
+  document.getElementById('contactForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    document.getElementById('contactThanks').style.display = 'block';
+  });
 </script>
 
 </body>

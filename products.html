@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#1C1B19">
-<meta name="description" content="灯 AKARI COFFEE STAND ― 鋳物の街・川口に生まれる、スペシャルティコーヒーとチャイの小さな店。産地を選べる豆とオリジナルチャイブレンドを、オンラインストアで先行してお届けします。">
-<title>灯 AKARI COFFEE STAND ― 川口のスペシャルティコーヒー&チャイ</title>
+<meta name="description" content="灯 AKARI COFFEE STANDのオンラインストア。産地別のスペシャルティコーヒーとオリジナルチャイブレンドをお届けします。店内メニューのご紹介もこちら。">
+<title>オンラインストア・メニュー ― 灯 AKARI COFFEE STAND</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@700;800;900&family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
       </div>
     </a>
     <nav class="nav-desktop">
-      <a href="products.html">オンラインストア</a>
+      <a href="products.html" class="is-active">オンラインストア</a>
       <a href="about.html">ブランドストーリー</a>
       <a href="package.html">パッケージ案</a>
       <a href="access.html">アクセス</a>
@@ -56,79 +56,48 @@
 
 <main>
 
-  <!-- ============ Hero: 刻印プレート ============ -->
-  <section class="hero">
+  <section class="hero" style="padding-bottom:40px">
     <div class="wrap">
-      <div class="stamp-plate">
-        <div class="stamp-mark">灯</div>
-        <div class="plate-name">AKARI COFFEE STAND</div>
-        <h1 class="plate-tagline">鋳物の街に、<br><span class="accent">火</span>を入れる一杯を。</h1>
-      </div>
-
-      <p class="hero-sub" style="margin-top:28px; max-width:520px; text-align:center; color:var(--ink-soft); font-size:15.5px">
-        産地を選べるスペシャルティコーヒーと、インドから届くオリジナルチャイ。川口に、小さく本気の店を準備しています。
-      </p>
-
-      <div class="hero-actions">
-        <a href="products.html" class="btn btn-primary">豆を試す</a>
-        <a href="about.html" class="btn btn-outline">店の話を読む</a>
-      </div>
-
-      <div class="spec-strip">
-        <span>産地 <b>4+</b></span>
-        <span>営業 <b>7:00–21:00</b></span>
-        <span>徒歩 <b>7分</b>(川口駅より)</span>
-      </div>
-
-      <div class="status-line">
-        <span class="tick"></span>
-        <span>
-          <strong>現在地:開業準備中・川口</strong>
-          <span class="muted">店舗の詳細は決まり次第お知らせします。オンラインストアは先行してご利用いただけます。</span>
-        </span>
-      </div>
+      <span class="eyebrow">ONLINE STORE</span>
+      <h1 class="page-title">豆を、<span class="accent">選ぶ</span>。</h1>
+      <p class="page-lead" style="margin-left:auto;margin-right:auto">店舗のオープンに先立ち、産地別のコーヒーとオリジナルチャイブレンドをお届けしています。価格は現時点の参考価格です。</p>
     </div>
   </section>
 
-  <!-- ============ Products: spec list ============ -->
-  <section class="section">
+  <!-- ============ Store: spec list ============ -->
+  <section class="section" style="padding-top:16px">
     <div class="wrap">
-      <div class="section-head">
-        <span class="eyebrow">ONLINE STORE</span>
-        <h2>豆を、まず一つ選ぶ。</h2>
-        <p class="lead">店のオープンに先立ち、産地別のコーヒーとオリジナルチャイブレンドをお届けしています。</p>
+      <div class="filter-bar" id="filterBar">
+        <button type="button" class="filter-btn is-active" data-filter="all">すべて</button>
+        <button type="button" class="filter-btn" data-filter="coffee">スペシャルティコーヒー</button>
+        <button type="button" class="filter-btn" data-filter="chai">オリジナルチャイ</button>
       </div>
-      <div class="spec-list" id="homeFeatured"></div>
-      <div class="section-foot center">
-        <a href="products.html" class="btn btn-outline">すべての商品を見る</a>
-      </div>
+      <div class="spec-list" id="storeList"></div>
     </div>
   </section>
 
-  <!-- ============ Brand short story ============ -->
-  <section class="section section-alt">
-    <div class="wrap" style="max-width:720px">
-      <span class="eyebrow">鋳物の街と、種火の話</span>
-      <h2 style="font-size:clamp(22px,3vw,28px); line-height:1.6">川口は、鉄を熱して型に流し込む「鋳物の街」です。</h2>
-      <p style="margin-top:20px; color:var(--ink-soft); font-size:15px; line-height:1.9">
-        鉄瓶や鍋を鋳込んできたこの街で、灯 AKARI COFFEE STANDは豆を焙煎し、チャイのスパイスをブレンドします。素材に正確な熱を加えて質を変えるという点で、コーヒーの仕事は鋳物の仕事とそう遠くありません。
-      </p>
-      <p style="margin-top:14px; color:var(--ink-soft); font-size:15px; line-height:1.9">
-        朝はスタンドで出勤前の一杯を、日中は10〜14席の店内でゆっくりと。ひとつの小さな種火が、時間帯によって違う形で街に灯ります。
-      </p>
-    </div>
-  </section>
-
-  <!-- ============ CTA band ============ -->
-  <section class="section">
+  <!-- ============ Subscription note ============ -->
+  <section class="section-tight section-alt">
     <div class="wrap">
       <div class="cta-band">
         <div>
           <h2>定期便で、切らさずに飲む。</h2>
           <p>お気に入りの豆やチャイを、決めた間隔で届ける定期便を準備中です。詳細はオープン時にご案内します。</p>
         </div>
-        <a href="products.html" class="btn btn-primary">オンラインストアを見る</a>
+        <span class="badge" style="background:transparent; border-color:#fff; color:#fff">近日公開</span>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ In-store menu ============ -->
+  <section class="section" id="menu">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">CAFE MENU</span>
+        <h2>店内メニューのご紹介</h2>
+        <p class="lead">開業後、店内・スタンドでご提供予定のメニューです。仕入れ状況により内容・価格が変わる場合があります。オンラインではご購入いただけません。</p>
+      </div>
+      <div class="grid grid-2" id="menuGroups"></div>
     </div>
   </section>
 
@@ -199,8 +168,44 @@
 <script src="assets/data.js"></script>
 <script src="assets/app.js"></script>
 <script>
-  document.getElementById('homeFeatured').innerHTML =
-    AKARI.DATA.products.slice(0, 4).map(AKARI.productRowHTML).join('');
+(function () {
+  const list = document.getElementById('storeList');
+  const bar = document.getElementById('filterBar');
+
+  function render(filter) {
+    const items = filter === 'all'
+      ? AKARI.DATA.products
+      : AKARI.DATA.products.filter(p => p.category === filter);
+    list.innerHTML = items.map(AKARI.productRowHTML).join('');
+  }
+
+  bar.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    AKARI.$$('.filter-btn', bar).forEach(b => b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    render(btn.dataset.filter);
+  });
+
+  render('all');
+
+  document.getElementById('menuGroups').innerHTML = AKARI.DATA.menuGroups.map(group => `
+    <div>
+      <h3 class="menu-group-title">${group.title}</h3>
+      <div class="menu-list">
+        ${group.items.map(item => `
+          <div class="menu-row">
+            <div>
+              <span class="menu-row-name">${item.name}</span>
+              ${item.note ? `<span class="menu-row-note">${item.note}</span>` : ''}
+            </div>
+            <span class="menu-row-price">${item.price}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+})();
 </script>
 
 </body>
