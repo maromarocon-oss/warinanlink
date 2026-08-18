@@ -19,7 +19,7 @@ window.AKARI_DATA = {
       notes: [
         { label: 'ROAST', val: '浅煎り' },
         { label: 'PROCESS', val: 'ウォッシュト' },
-        { label: 'FLAVOR', val: 'フローラル' }
+        { label: 'FLAVOR', val: 'ベルガモット・レモンティー・フローラル' }
       ],
       variants: [
         { id: '100g', label: '100g', price: 1200 },
@@ -38,7 +38,7 @@ window.AKARI_DATA = {
       notes: [
         { label: 'ROAST', val: '中煎り' },
         { label: 'PROCESS', val: 'ウォッシュト' },
-        { label: 'FLAVOR', val: 'ナッツ・キャラメル' }
+        { label: 'FLAVOR', val: 'ミルクチョコレート・ナッツ・キャラメル' }
       ],
       variants: [
         { id: '100g', label: '100g', price: 1100 },
@@ -57,7 +57,7 @@ window.AKARI_DATA = {
       notes: [
         { label: 'ROAST', val: '中煎り' },
         { label: 'PROCESS', val: 'ウォッシュト' },
-        { label: 'FLAVOR', val: 'ベリー・カシス' }
+        { label: 'FLAVOR', val: 'カシス・ベリー・力強い酸味' }
       ],
       variants: [
         { id: '100g', label: '100g', price: 1300 },
@@ -76,7 +76,7 @@ window.AKARI_DATA = {
       notes: [
         { label: 'ROAST', val: '中深煎り' },
         { label: 'PROCESS', val: 'ナチュラル' },
-        { label: 'FLAVOR', val: 'ナッツ・低酸味' }
+        { label: 'FLAVOR', val: 'ナッツ・ミルクチョコレート・低酸味' }
       ],
       variants: [
         { id: '100g', label: '100g', price: 1000 },
@@ -94,7 +94,7 @@ window.AKARI_DATA = {
       desc: 'アッサム茶葉に、シナモン・カルダモン・ジンジャー・クローブなど6種のスパイスを配合したオリジナルブレンドです。鍋に茶葉と牛乳を入れて煮出すだけで、専門店のマサラチャイをご自宅でお楽しみいただけます。',
       notes: [
         { label: 'BASE', val: 'アッサム茶葉' },
-        { label: 'SPICE', val: '6種配合' },
+        { label: 'SPICE', val: 'シナモン・カルダモン・ジンジャー・クローブ' },
         { label: 'ORIGIN', val: 'インド直輸入' }
       ],
       variants: [

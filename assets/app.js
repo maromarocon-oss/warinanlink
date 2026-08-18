@@ -155,10 +155,9 @@
   /* -------------------- nav / drawer open-close -------------------- */
   function initChrome() {
     // mobile nav
-    const navToggle = $('.js-nav-open');
-    const navPanel   = $('.nav-mobile');
-    if (navToggle && navPanel) {
-      navToggle.addEventListener('click', () => navPanel.classList.add('is-open'));
+    const navPanel = $('.nav-mobile');
+    if (navPanel) {
+      $$('.js-nav-open').forEach(btn => btn.addEventListener('click', () => navPanel.classList.add('is-open')));
       $$('.js-nav-close', navPanel).forEach(btn => btn.addEventListener('click', () => navPanel.classList.remove('is-open')));
       navPanel.addEventListener('click', (e) => { if (e.target === navPanel) navPanel.classList.remove('is-open'); });
     }
