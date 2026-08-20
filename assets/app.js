@@ -125,8 +125,9 @@
     const multi = product.variants.length > 1;
     const specs = product.notes.map(n => `<span>${n.label} <b>${n.val}</b></span>`).join('');
     return `
-      <a class="spec-row" href="product.html?id=${product.id}">
-        <div>
+      <a class="spec-row is-${product.category}" href="product.html?id=${product.id}">
+        <span class="spec-row-dot" aria-hidden="true"></span>
+        <div class="spec-row-main">
           <div class="spec-row-name">${product.name}${product.badge ? `<span class="badge">${product.badge}</span>` : ''}</div>
           <p class="spec-row-lead">${product.lead}</p>
           <div class="spec-row-tags">${specs}</div>
